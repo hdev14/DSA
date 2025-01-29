@@ -1,5 +1,4 @@
 #include <iostream>
-#include "alternating_elements.h"
 
 using namespace std;
 
