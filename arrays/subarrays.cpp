@@ -48,6 +48,19 @@ void printSubArraysRecursive(vector<int> &vec, int start, int end)
     }
 }
 
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * @brief This is the main function of the program
+ *
+ * This function does the following:
+ *  1. Declares a vector with the elements 1, 2, 3, and 4.
+ *  2. Calls the function printSubArrays with the vector as the argument.
+ *  3. Calls the function printSubArraysRecursive with the vector, 0, and 0 as arguments.
+ *  4. Returns 0.
+ *
+ * @return 0 if the function runs successfully
+ */
+/******  3546e73c-042d-469f-a61b-db993e9571d3  *******/
 int main()
 {
     vector<int> vec = {1, 2, 3, 4};
