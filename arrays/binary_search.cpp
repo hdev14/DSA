@@ -1,6 +1,6 @@
 #include <iostream>
 
-using std::cout;
+using namespace std;
 
 int binarySearch(int array[], int low, int high, int value)
 {
@@ -49,17 +49,15 @@ int main()
 {
     cout << "---Binary Search---\n";
 
-    int array[6] = {1, 2, 4, 5, 6, 7};
-
-    int capacity = sizeof(array) / sizeof(array[0]);
-
-    int high = capacity - 1,
+    int array[5] = {2, 3, 4, 10, 40},
+        capacity = sizeof(array) / sizeof(array[0]),
+        high = capacity - 1,
         low = 0,
-        value = 5,
+        value = 10,
         position = -1;
 
-    // position = binarySearch(array, low, high, value);
-    position = recursiveBinarySearch(array, low, high, value);
+    position = binarySearch(array, low, high, value);
+    // position = recursiveBinarySearch(array, low, high, value);
 
     if (position == -1)
         cout << "Element not found";
