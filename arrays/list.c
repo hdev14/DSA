@@ -172,51 +172,49 @@ int main()
 {
   printf("-------------------- List -------------------- \n");
 
-  List unsorted_list;
+  List list;
 
-  startList(&unsorted_list);
+  startList(&list);
 
   for (int i = 0; i < MAX; i++)
   {
     Item item;
     item.key = i + 1;
-    insertItem(&unsorted_list, item, i + 1);
+    insertItem(&list, item, i + 1);
   }
 
-  printList(&unsorted_list);
+  printList(&list);
 
-  printf("Item -> %i \n", linearSearch(&unsorted_list, 40));
+  printf("Item -> %i \n", linearSearch(&list, 40));
 
-  printf("Item -> %i \n", linearSearch(&unsorted_list, 100));
+  printf("Item -> %i \n", linearSearch(&list, 100));
 
-  removeItem(&unsorted_list, 40);
+  removeItem(&list, 40);
 
-  printList(&unsorted_list);
+  printList(&list);
 
   // -----------------------
 
   printf("-------------------- Sorted List -------------------- \n");
 
-  List sorted_list;
-
-  startList(&sorted_list);
+  restartList(&list);
 
   for (int i = MAX; i > 0; i--)
   {
     Item item;
     item.key = i;
-    insertItemInOrder(&sorted_list, item);
+    insertItemInOrder(&list, item);
   }
 
-  printList(&sorted_list);
+  printList(&list);
 
-  printf("Item -> %i \n", binarySearch(&sorted_list, 40));
+  printf("Item -> %i \n", binarySearch(&list, 40));
 
-  printf("Item -> %i \n", binarySearch(&sorted_list, 100));
+  printf("Item -> %i \n", binarySearch(&list, 100));
 
-  removeItemBS(&sorted_list, 40);
+  removeItemBS(&list, 40);
 
-  printList(&sorted_list);
+  printList(&list);
 
   return 0;
 }
