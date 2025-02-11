@@ -106,15 +106,15 @@ bool insertItem(LinkedList *list, Key key)
     int previous = INVALID;
     int next = list->start;
 
-    while (next != INVALID && list->nodes[next].key < key)
+    while (next != INVALID && list->nodes[next].key <= key)
     {
+        if (list->nodes[next].key == key)
+        {
+            return false;
+        }
+
         previous = next;
         next = list->nodes[next].next;
-    }
-
-    if (next != INVALID && list->nodes[next].key == key)
-    {
-        return false;
     }
 
     int next_available = getNextAvailable(list);
