@@ -7,214 +7,214 @@ typedef int Key;
 
 typedef struct
 {
-  Key key;
+    Key key;
 } Item;
 
 typedef struct
 {
-  Item items[MAX];
-  int size;
+    Item items[MAX];
+    int size;
 } List;
 
 void startList(List *list)
 {
-  list->size = 0;
+    list->size = 0;
 }
 
 void restartList(List *list)
 {
-  startList(list);
+    startList(list);
 }
 
 void printList(List *list)
 {
-  printf("List \n");
+    printf("List \n");
 
-  for (int i = 0; i < list->size; i++)
-  {
-    printf("%i ", list->items[i].key);
-  }
+    for (int i = 0; i < list->size; i++)
+    {
+        printf("%i ", list->items[i].key);
+    }
 
-  printf("\n");
+    printf("\n");
 }
 
 int linearSearch(List *list, Key key)
 {
-  for (int i = 0; i < list->size; i++)
-  {
-    if (list->items[i].key == key)
+    for (int i = 0; i < list->size; i++)
     {
-      return i;
+        if (list->items[i].key == key)
+        {
+            return i;
+        }
     }
-  }
 
-  return -1;
+    return -1;
 }
 
 int linearSearchWithSentinel(List *list, Key key)
 {
-  int i = 0;
-  list->items[list->size].key = key; // sentinel
+    int i = 0;
+    list->items[list->size].key = key; // sentinel
 
-  while (list->items[i].key == key)
-  {
-    i++;
-  }
+    while (list->items[i].key == key)
+    {
+        i++;
+    }
 
-  return i == list->size ? -1 : i;
+    return i == list->size ? -1 : i;
 }
 
 int binarySearch(List *list, Key key)
 {
-  int left = 0;
-  int right = list->size - 1;
-  int mid;
+    int left = 0;
+    int right = list->size - 1;
+    int mid;
 
-  while (left <= right)
-  {
-    mid = (left + right) / 2;
-
-    if (list->items[mid].key == key)
+    while (left <= right)
     {
-      return mid;
+        mid = (left + right) / 2;
+
+        if (list->items[mid].key == key)
+        {
+            return mid;
+        }
+
+        if (list->items[mid].key < key)
+        {
+            left = mid + 1;
+            continue;
+        }
+
+        if (list->items[mid].key > key)
+        {
+            right = mid - 1;
+        }
     }
 
-    if (list->items[mid].key < key)
-    {
-      left = mid + 1;
-      continue;
-    }
-
-    if (list->items[mid].key > key)
-    {
-      right = mid - 1;
-    }
-  }
-
-  return -1;
+    return -1;
 }
 
 bool insertItem(List *list, Item item, int idx)
 {
-  if (list->size == MAX || idx < 1 || idx > MAX)
-  {
-    return false;
-  }
+    if (list->size == MAX || idx < 1 || idx > MAX)
+    {
+        return false;
+    }
 
-  for (int i = list->size - 1; i >= idx; i--)
-  {
-    list->items[i] = list->items[i - 1];
-  }
+    for (int i = list->size - 1; i >= idx; i--)
+    {
+        list->items[i] = list->items[i - 1];
+    }
 
-  list->items[idx - 1] = item;
-  list->size++;
+    list->items[idx - 1] = item;
+    list->size++;
 
-  return true;
+    return true;
 }
 
 bool insertItemInOrder(List *list, Item item)
 {
-  if (list->size >= MAX)
-  {
-    return false;
-  }
+    if (list->size >= MAX)
+    {
+        return false;
+    }
 
-  int idx = list->size;
+    int idx = list->size;
 
-  for (; idx > 0 && list->items[idx - 1].key > item.key; idx--)
-  {
-    list->items[idx] = list->items[idx - 1];
-  }
+    for (; idx > 0 && list->items[idx - 1].key > item.key; idx--)
+    {
+        list->items[idx] = list->items[idx - 1];
+    }
 
-  list->items[idx] = item;
-  list->size++;
-  return true;
+    list->items[idx] = item;
+    list->size++;
+    return true;
 }
 
 bool removeItem(List *list, Key key)
 {
-  int idx = linearSearch(list, key);
+    int idx = linearSearch(list, key);
 
-  if (idx == -1)
-  {
-    return false;
-  }
+    if (idx == -1)
+    {
+        return false;
+    }
 
-  for (int i = idx; i < list->size - 1; i++)
-  {
-    list->items[i] = list->items[i + 1];
-  }
+    for (int i = idx; i < list->size - 1; i++)
+    {
+        list->items[i] = list->items[i + 1];
+    }
 
-  list->size--;
+    list->size--;
 
-  return true;
+    return true;
 }
 
 bool removeItemBS(List *list, Key key)
 {
-  int idx = binarySearch(list, key);
+    int idx = binarySearch(list, key);
 
-  if (idx == -1)
-  {
-    return false;
-  }
+    if (idx == -1)
+    {
+        return false;
+    }
 
-  for (int i = idx; i < list->size - 1; i++)
-  {
-    list->items[i] = list->items[i + 1];
-  }
+    for (int i = idx; i < list->size - 1; i++)
+    {
+        list->items[i] = list->items[i + 1];
+    }
 
-  list->size--;
+    list->size--;
 
-  return true;
+    return true;
 }
 int main()
 {
-  printf("-------------------- List -------------------- \n");
+    printf("-------------------- List -------------------- \n");
 
-  List list;
+    List list;
 
-  startList(&list);
+    startList(&list);
 
-  for (int i = 0; i < MAX; i++)
-  {
-    Item item;
-    item.key = i + 1;
-    insertItem(&list, item, i + 1);
-  }
+    for (int i = 0; i < MAX; i++)
+    {
+        Item item;
+        item.key = i + 1;
+        insertItem(&list, item, i + 1);
+    }
 
-  printList(&list);
+    printList(&list);
 
-  printf("Item -> %i \n", linearSearch(&list, 40));
+    printf("Item -> %i \n", linearSearch(&list, 40));
 
-  printf("Item -> %i \n", linearSearch(&list, 100));
+    printf("Item -> %i \n", linearSearch(&list, 100));
 
-  removeItem(&list, 40);
+    removeItem(&list, 40);
 
-  printList(&list);
+    printList(&list);
 
-  // -----------------------
+    // -----------------------
 
-  printf("-------------------- Sorted List -------------------- \n");
+    printf("-------------------- Sorted List -------------------- \n");
 
-  restartList(&list);
+    restartList(&list);
 
-  for (int i = MAX; i > 0; i--)
-  {
-    Item item;
-    item.key = i;
-    insertItemInOrder(&list, item);
-  }
+    for (int i = MAX; i > 0; i--)
+    {
+        Item item;
+        item.key = i;
+        insertItemInOrder(&list, item);
+    }
 
-  printList(&list);
+    printList(&list);
 
-  printf("Item -> %i \n", binarySearch(&list, 40));
+    printf("Item -> %i \n", binarySearch(&list, 40));
 
-  printf("Item -> %i \n", binarySearch(&list, 100));
+    printf("Item -> %i \n", binarySearch(&list, 100));
 
-  removeItemBS(&list, 40);
+    removeItemBS(&list, 40);
 
-  printList(&list);
+    printList(&list);
 
-  return 0;
+    return 0;
 }
