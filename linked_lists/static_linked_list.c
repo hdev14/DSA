@@ -96,7 +96,7 @@ int linearSearch(LinkedList *list, Key key)
     return -1;
 }
 
-bool insertItem(LinkedList *list, Key key)
+bool insertNode(LinkedList *list, Key key)
 {
     if (list->next_available == INVALID)
     {
@@ -135,7 +135,7 @@ bool insertItem(LinkedList *list, Key key)
     return true;
 }
 
-bool removeItem(LinkedList *list, Key key)
+bool removeNode(LinkedList *list, Key key)
 {
     int next = list->start;
     int previous = INVALID;
@@ -172,7 +172,7 @@ int main()
 
     for (int i = 0; i < MAX; i++)
     {
-        insertItem(&list, i + 1);
+        insertNode(&list, i + 1);
     }
 
     printList(&list);
@@ -181,7 +181,7 @@ int main()
 
     printf("Item -> %i \n", linearSearch(&list, 40));
 
-    removeItem(&list, 40);
+    removeNode(&list, 40);
 
     printList(&list);
 
