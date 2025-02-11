@@ -177,5 +177,15 @@ int main()
 
     printList(&list);
 
+    printf("List size => %i \n", listSize(&list));
+
+    printf("Item -> %i \n", linearSearch(&list, 40));
+
+    removeItem(&list, 40);
+
+    printList(&list);
+
+    restartList(&list);
+
     return 0;
 }
