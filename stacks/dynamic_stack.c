@@ -115,5 +115,10 @@ int main()
 
     restartStack(&stack);
 
+    if (isEmpty(&stack))
+    {
+        printf("\nStack empty!!\n");
+    }
+
     return 0;
 }
