@@ -42,22 +42,41 @@ void printTree(Node *root)
 {
     if (root == NULL)
     {
-        printf("Empty tree\n");
+        return;
     }
+    printTree(root->left);
+    printf("/ %i \\", root->value);
+    printTree(root->right);
+}
 
-    printf("Node %i ", root->value);
-
-    if (root->left != NULL)
+Node *binarySearch(Node *root, int value)
+{
+    if (root == NULL)
     {
-        printf("L:");
-        printTree(root->left);
+        return NULL;
     }
 
-    if (root->right != NULL)
+    if (root->value == value)
     {
-        printf("R:");
-        printTree(root->right);
+        return root;
     }
+
+    if (value < root->value)
+    {
+        return binarySearch(root->left, value);
+    }
+
+    return binarySearch(root->right, value);
+}
+
+int qtyNodes(Node *root)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+
+    return qtyNodes(root->left) + 1 + qtyNodes(root->right);
 }
 
 int main()
@@ -69,6 +88,18 @@ int main()
     root_tree = addNode(root_tree, createNode(8));
 
     printTree(root_tree);
+
+    Node *node = binarySearch(root_tree, 7);
+    if (node == NULL)
+    {
+        printf("\nNode not found\n");
+    }
+    else
+    {
+        printf("\n%i", node->value);
+    }
+
+    printf("Qty Nodes %i\n", qtyNodes(root_tree));
 
     return 0;
 }
