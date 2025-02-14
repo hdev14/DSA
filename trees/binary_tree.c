@@ -79,6 +79,88 @@ int qtyNodes(Node *root)
     return qtyNodes(root->left) + 1 + qtyNodes(root->right);
 }
 
+Node *getNode(Node *root, float value, Node **previous)
+{
+    Node *current = root;
+    *previous = NULL;
+
+    while (current != NULL && current->value != value)
+    {
+        *previous = current;
+        if (value > current->value)
+        {
+            current = current->right;
+        }
+        else
+        {
+            current = current->left;
+        }
+    }
+
+    if (current != NULL && current->value == value)
+    {
+        return current;
+    }
+
+    return NULL;
+}
+
+Node *removeNode(Node *root, float value)
+{
+    Node *previous = NULL;
+    Node *node = getNode(root, value, &previous);
+
+    if (node == NULL)
+    {
+        return root;
+    }
+
+    Node *child;
+
+    if (node->left == NULL || node->right == NULL)
+    {
+        child = node->left == NULL ? node->right : node->left;
+    }
+    else
+    {
+        Node *father = node;
+        child = node->left;
+        while (child->right != NULL)
+        {
+            father = child;
+            child = child->right;
+        }
+
+        if (father != node)
+        {
+            father->right = child->left;
+            child->left = node->left;
+        }
+
+        child->right = node->right;
+    }
+
+    // ROOT
+    if (previous == NULL)
+    {
+        free(node);
+        return child;
+    }
+
+    if (value < previous->value)
+    {
+        previous->left = child;
+    }
+    else
+    {
+        previous->right = child;
+    }
+
+    free(node);
+
+    return root;
+}
+
 int main()
 {
     Node *root_tree = addNode(NULL, createNode(10));
@@ -100,6 +182,10 @@ int main()
     }
 
     printf("Qty Nodes %i\n", qtyNodes(root_tree));
+
+    root_tree = removeNode(root_tree, 9);
+
+    printTree(root_tree);
 
     return 0;
 }
