@@ -1,0 +1,1 @@
+This repo contains a lot of example of how to implement some data structures and algorithm with C/C++. Its goal is to show examples of how to implement theses structures and algorithms. So feel free to look inside each folder and improve your knowledge about DSA together with me.
