@@ -3,6 +3,10 @@
 #include <malloc.h>
 #include <stdbool.h>
 
+#define UNVISITED 0
+#define VISITED 1
+#define COMPLETED 2
+
 typedef struct Node
 {
     int vertice;
@@ -90,6 +94,44 @@ void printGraph(Graph *graph)
     }
 }
 
+void visiteVertices(Graph *graph, int *visited_vertices, int vertice_idx)
+{
+    visited_vertices[vertice_idx] = VISITED;
+
+    Node *node = graph->vertices[vertice_idx].head;
+
+    while (node != NULL)
+    {
+        if (visited_vertices[node->vertice] == UNVISITED)
+        {
+            visiteVertices(graph, visited_vertices, node->vertice);
+        }
+        node = node->next;
+    }
+
+    visited_vertices[vertice_idx] = COMPLETED;
+}
+
+int *DFS(Graph *graph)
+{
+    int *visited_vertices = (int *)malloc(graph->qty_vertices * sizeof(int));
+
+    for (int i = 0; i < graph->qty_vertices; i++)
+    {
+        visited_vertices[i] = UNVISITED;
+    }
+
+    for (int i = 0; i < graph->qty_vertices; i++)
+    {
+        if (visited_vertices[i] == UNVISITED)
+        {
+            visiteVertices(graph, visited_vertices, i);
+        }
+    }
+
+    return visited_vertices;
+}
+
 int main()
 {
     Graph *graph = createGraph(3);
@@ -100,6 +142,13 @@ int main()
     }
 
     printGraph(graph);
+
+    int *result = DFS(graph);
+
+    for (int i = 0; i < graph->qty_vertices; i++)
+    {
+        printf("[%i] ", result[i]);
+    }
 
     return 0;
 }
