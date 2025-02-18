@@ -72,6 +72,7 @@ int queueSize(Queue *queue)
 
     return size;
 }
+
 void printQueue(Queue *queue)
 {
     Item *next = queue->start;
