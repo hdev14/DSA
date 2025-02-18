@@ -113,6 +113,8 @@ Node *insert(Node *root, int value)
     return root;
 }
 
+// TODO bool remove(Node* root, int value)
+
 void printTree(Node *root)
 {
     if (root == NULL)
