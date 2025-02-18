@@ -132,27 +132,6 @@ int *DFS(Graph *graph)
     return visited_vertices;
 }
 
-void exploreVertice(Graph *graph, int *explored, int vertice_idx)
-{
-}
-
-int BFS(Graph *graph)
-{
-    bool explored[graph->qty_vertices];
-
-    for (int i = 0; i < graph->qty_vertices; i++)
-    {
-        explored[i] = false;
-    }
-
-    for (int i = 0; i < graph->qty_vertices; i++)
-    {
-        if (explored[i] == false)
-        {
-        }
-    }
-}
-
 int main()
 {
     Graph *graph = createGraph(3);

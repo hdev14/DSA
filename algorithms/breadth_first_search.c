@@ -26,6 +26,108 @@ typedef struct Graph
     Vertice *vertices;
 } Graph;
 
+typedef struct Item
+{
+    int key;
+    struct Item *next;
+} Item;
+
+typedef struct
+{
+    Item *start;
+    Item *end;
+} Queue;
+
+void startQueue(Queue *queue)
+{
+    queue->start = NULL;
+    queue->end = NULL;
+}
+
+void restartQueue(Queue *queue)
+{
+    Item *end = queue->start;
+
+    while (end != NULL)
+    {
+        Item *aux = end;
+        end = end->next;
+        free(aux);
+    }
+
+    queue->start = NULL;
+    queue->end = NULL;
+}
+
+int queueSize(Queue *queue)
+{
+    Item *end = queue->start;
+    int size = 0;
+
+    while (end != NULL)
+    {
+        size++;
+        end = end->next;
+    }
+
+    return size;
+}
+void printQueue(Queue *queue)
+{
+    Item *next = queue->start;
+
+    printf("\nQueue\n");
+
+    while (next != NULL)
+    {
+        printf("%i ", next->key);
+        next = next->next;
+    }
+
+    printf("\n");
+}
+
+bool insertItem(Queue *queue, int key)
+{
+    Item *new_item = (Item *)malloc(sizeof(Item));
+    new_item->key = key;
+    new_item->next = NULL;
+
+    if (queue->start == NULL)
+    {
+        queue->start = new_item;
+        queue->end = new_item;
+    }
+    else
+    {
+        queue->end->next = new_item;
+        queue->end = new_item;
+    }
+
+    return true;
+}
+
+bool removeItem(Queue *queue, int *key)
+{
+    if (queue->start == NULL)
+    {
+        return false;
+    }
+
+    *key = queue->start->key;
+    Item *aux = queue->start;
+    queue->start = aux->next;
+
+    if (queue->start == NULL)
+    {
+        queue->end = NULL;
+    }
+
+    free(aux);
+
+    return true;
+}
+
 Graph *createGraph(int qty_vertices)
 {
     Graph *graph = (Graph *)malloc(sizeof(Graph));
@@ -94,51 +196,39 @@ void printGraph(Graph *graph)
     }
 }
 
-void visiteVertices(Graph *graph, int *visited_vertices, int vertice_idx)
+void exploreVertice(Graph *graph, bool *explored, int vertice_idx)
 {
-    visited_vertices[vertice_idx] = VISITED;
+    Queue queue;
+    startQueue(&queue);
+    explored[vertice_idx] = true;
 
-    Node *node = graph->vertices[vertice_idx].head;
+    insertItem(&queue, vertice_idx);
 
-    while (node != NULL)
+    while (queue.start != NULL)
     {
-        if (visited_vertices[node->vertice] == UNVISITED)
+        int key;
+        removeItem(&queue, &key);
+        Node *node = graph->vertices[vertice_idx].head;
+
+        while (node != NULL)
         {
-            visiteVertices(graph, visited_vertices, node->vertice);
+            if (explored[node->vertice] == false)
+            {
+                explored[node->vertice] = true;
+                insertItem(&queue, node->vertice);
+            }
+            node = node->next;
         }
-        node = node->next;
+
+        printf("Visited key %i\n", key);
     }
 
-    visited_vertices[vertice_idx] = COMPLETED;
+    restartQueue(&queue);
 }
 
-int *DFS(Graph *graph)
+bool *BFS(Graph *graph)
 {
-    int *visited_vertices = (int *)malloc(graph->qty_vertices * sizeof(int));
-
-    for (int i = 0; i < graph->qty_vertices; i++)
-    {
-        visited_vertices[i] = UNVISITED;
-    }
-
-    for (int i = 0; i < graph->qty_vertices; i++)
-    {
-        if (visited_vertices[i] == UNVISITED)
-        {
-            visiteVertices(graph, visited_vertices, i);
-        }
-    }
-
-    return visited_vertices;
-}
-
-void exploreVertice(Graph *graph, int *explored, int vertice_idx)
-{
-}
-
-int BFS(Graph *graph)
-{
-    bool explored[graph->qty_vertices];
+    bool *explored = (bool *)malloc(graph->qty_vertices * sizeof(bool));
 
     for (int i = 0; i < graph->qty_vertices; i++)
     {
@@ -149,8 +239,11 @@ int BFS(Graph *graph)
     {
         if (explored[i] == false)
         {
+            exploreVertice(graph, explored, i);
         }
     }
+
+    return explored;
 }
 
 int main()
@@ -164,11 +257,11 @@ int main()
 
     printGraph(graph);
 
-    int *result = DFS(graph);
+    bool *result = BFS(graph);
 
     for (int i = 0; i < graph->qty_vertices; i++)
     {
-        printf("[%i] ", result[i]);
+        printf("[%i] ", (int)result[i]);
     }
 
     return 0;
