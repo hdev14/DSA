@@ -204,7 +204,7 @@ int main()
 
     for (int i = 0; i < graph->qty_vertices; i++)
     {
-        printf("D(v0 -> v%i) = %i\n", i, values[i]);
+        printf("Value of (v0 -> v%i) = %i\n", i, values[i]);
     }
 
     return 0;
