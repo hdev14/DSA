@@ -94,16 +94,118 @@ void printGraph(Graph *graph)
     }
 }
 
+void setupValuesAndPrevious(int qty_vertices, int *values, int *previous, int vertice_idx)
+{
+    for (int i = 0; i < qty_vertices; i++)
+    {
+        values[i] = __INT_MAX__;
+        previous[i] = -1;
+    }
+
+    values[vertice_idx] = 0;
+}
+
+void relaxation(Graph *graph, int *values, int *previous, int current_vertice_idx, int next_vertice_idx)
+{
+    Node *node = graph->vertices[current_vertice_idx].head;
+
+    while (node != NULL && node->vertice != next_vertice_idx)
+    {
+        node = node->next;
+    }
+
+    if (node)
+    {
+        if (values[next_vertice_idx] > values[current_vertice_idx] + node->value)
+        {
+            values[next_vertice_idx] = values[current_vertice_idx] + node->value;
+            previous[next_vertice_idx] = current_vertice_idx;
+        }
+    }
+}
+
+bool existUnvisited(int qty_vertices, bool *visited)
+{
+    for (int i = 0; i < qty_vertices; i++)
+    {
+        if (visited[i] == false)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int findSmallest(int qty_vertices, int *values, bool *visited)
+{
+    int i = 0;
+    int smallest = __INT_MAX__;
+    int idx = -1;
+    while (i < qty_vertices)
+    {
+        if (visited[i] != true && values[i] < smallest)
+        {
+            smallest = values[i];
+            idx = i;
+        }
+        i++;
+    }
+
+    return idx;
+}
+
+int *dijkstra(Graph *graph, int first_vertice_idx)
+{
+    int *values = (int *)malloc(graph->qty_vertices * sizeof(int));
+    int previous[graph->qty_vertices * sizeof(int)];
+    bool visited[graph->qty_vertices];
+    setupValuesAndPrevious(graph->qty_vertices, values, previous, first_vertice_idx);
+
+    for (int i = 0; i < graph->qty_vertices; i++)
+    {
+        visited[i] = false;
+    }
+
+    while (existUnvisited(graph->qty_vertices, visited))
+    {
+        int vertice_idx = findSmallest(graph->qty_vertices, values, visited);
+
+        if (vertice_idx == -1)
+        {
+            continue;
+        }
+
+        visited[vertice_idx] = true;
+        Node *node = graph->vertices[vertice_idx].head;
+
+        while (node != NULL)
+        {
+            relaxation(graph, values, previous, vertice_idx, node->vertice);
+            node = node->next;
+        }
+    }
+
+    return values;
+}
+
 int main()
 {
     Graph *graph = createGraph(3);
 
     for (int i = 0; i < 3; i++)
     {
-        insertEdge(graph, i, (i + 1) % 3, i * 2);
+        insertEdge(graph, i, (i + 1) % 3, (i + 1) * 2);
     }
 
     printGraph(graph);
+
+    int *values = dijkstra(graph, 0);
+
+    for (int i = 0; i < graph->qty_vertices; i++)
+    {
+        printf("D(v0 -> v%i) = %i\n", i, values[i]);
+    }
 
     return 0;
 }
