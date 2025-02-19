@@ -173,7 +173,7 @@ int *dijkstra(Graph *graph, int first_vertice_idx)
 
         if (vertice_idx == -1)
         {
-            continue;
+            break;
         }
 
         visited[vertice_idx] = true;
