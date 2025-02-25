@@ -7,6 +7,7 @@ int findRootIdx(int *idxs, int idx)
 {
     while (idx != idxs[idx])
     {
+        idxs[idx] = idxs[idxs[idx]]; // path compression
         idx = idxs[idx];
     }
     return idx;
