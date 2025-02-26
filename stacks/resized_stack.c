@@ -45,6 +45,12 @@ int pop(Stack *stack)
         return -1;
     }
 
+    int length = sizeof(stack->items) / sizeof(int);
+    if (stack->size <= (length / 4))
+    {
+        resize(stack, length / 2);
+    }
+
     int item = stack->items[--stack->size];
 
     return item;
@@ -69,6 +75,7 @@ int main()
     push(&stack, 1);
     push(&stack, 3);
     push(&stack, 2);
+    push(&stack, 5);
     printStack(&stack);
     printf("Removed item %i\n", pop(&stack));
     printf("Removed item %i\n", pop(&stack));
