@@ -12,7 +12,7 @@ void shellSort(int *array, int length)
     int h = 1;
     while (h < length / 3)
     {
-        h = h * 3 + 1;
+        h = h * 3 + 1; // knuth logic
     }
 
     while (h >= 1)
