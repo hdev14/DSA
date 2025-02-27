@@ -105,7 +105,7 @@ Node *findPenult(Dequeue *dequeue)
     Node *next = dequeue->head;
     Node *penult = NULL;
 
-    while (next != NULL)
+    while (next->next != NULL)
     {
         penult = next;
         next = next->next;
@@ -132,6 +132,7 @@ bool removeLast(Dequeue *dequeue)
     else
     {
         dequeue->tail = penult;
+        penult->next = NULL;
     }
 
     free(last);
@@ -141,7 +142,31 @@ bool removeLast(Dequeue *dequeue)
     return true;
 }
 
+void printDequeue(Dequeue *dequeue)
+{
+    Node *next = dequeue->head;
+    printf("Dequeue\n");
+    while (next != NULL)
+    {
+        printf("%i ", next->value);
+        next = next->next;
+    }
+    printf("\n");
+}
+
 int main()
 {
+    Dequeue dequeue;
+    startDequeue(&dequeue);
+    addFirst(&dequeue, 1);
+    addFirst(&dequeue, 2);
+    addFirst(&dequeue, 3);
+    printDequeue(&dequeue);
+    removeFirst(&dequeue);
+    printDequeue(&dequeue);
+    addLast(&dequeue, 5);
+    addLast(&dequeue, 6);
+    removeLast(&dequeue);
+    printDequeue(&dequeue);
     return 0;
 }
