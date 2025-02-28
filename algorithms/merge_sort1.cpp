@@ -3,65 +3,65 @@
 
 using namespace std;
 
-void merge(vector<int> &vec, int left, int mid, int right)
+void merge(vector<int> &vec, int low, int mid, int high)
 {
-    int left_length = mid - left + 1;
-    int right_length = right - mid;
+    int low_length = mid - low + 1;
+    int high_length = high - mid;
 
-    vector<int> left_subarray(left_length), right_subarray(right_length);
+    vector<int> low_subarray(low_length), high_subarray(high_length);
 
-    for (int i = 0; i < left_length; i++)
+    for (int i = 0; i < low_length; i++)
     {
-        left_subarray[i] = vec[left + i];
+        low_subarray[i] = vec[low + i];
     }
 
-    for (int i = 0; i < right_length; i++)
+    for (int i = 0; i < high_length; i++)
     {
-        right_subarray[i] = vec[mid + 1 + i];
+        high_subarray[i] = vec[mid + 1 + i];
     }
 
-    int left_idx = 0, right_idx = 0;
-    int idx = left;
+    int low_idx = 0, high_idx = 0;
+    int idx = low;
 
-    while (left_idx < left_length && right_idx < right_length)
+    while (low_idx < low_length && high_idx < high_length)
     {
-        if (left_subarray[left_idx] <= right_subarray[right_idx])
+        if (low_subarray[low_idx] <= high_subarray[high_idx])
         {
-            vec[idx] = left_subarray[left_idx];
-            left_idx++;
+            vec[idx] = low_subarray[low_idx];
+            low_idx++;
         }
         else
         {
-            vec[idx] = right_subarray[right_idx];
-            right_idx++;
+            vec[idx] = high_subarray[high_idx];
+            high_idx++;
         }
         idx++;
     }
 
-    while (left_idx < left_length)
+    while (low_idx < low_length)
     {
-        vec[idx] = left_subarray[left_idx];
-        left_idx++;
+        vec[idx] = low_subarray[low_idx];
+        low_idx++;
         idx++;
     }
 
-    while (right_idx < right_length)
+    while (high_idx < high_length)
     {
-        vec[idx] = right_subarray[right_idx];
-        right_idx++;
+        vec[idx] = high_subarray[high_idx];
+        high_idx++;
         idx++;
     }
 }
 
-void mergeSort(vector<int> &vec, int left, int right)
+void mergeSort(vector<int> &vec, int low, int high)
 {
-    if (left >= right)
+    if (low >= high)
         return;
 
-    int mid = left + (right - left) / 2;
-    mergeSort(vec, left, mid);
-    mergeSort(vec, mid + 1, right);
-    merge(vec, left, mid, right);
+    int mid = low + (high - low) / 2;
+    mergeSort(vec, low, mid);
+    mergeSort(vec, mid + 1, high);
+    merge(vec, low, mid, high);
 }
 
 int main()

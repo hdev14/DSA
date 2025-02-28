@@ -3,14 +3,14 @@
 
 using namespace std;
 
-void merge(vector<int> &vec, vector<int> &aux, int lower, int mid, int high)
+void merge(vector<int> &vec, vector<int> &aux, int low, int mid, int high)
 {
-    for (int i = lower; i <= high; i++)
+    for (int i = low; i <= high; i++)
     {
         aux[i] = vec[i];
     }
 
-    for (int i = lower, j = mid + 1, k = lower; k <= high; k++)
+    for (int i = low, j = mid + 1, k = low; k <= high; k++)
     {
         if (i > mid)
         {
@@ -38,15 +38,15 @@ void merge(vector<int> &vec, vector<int> &aux, int lower, int mid, int high)
     }
 }
 
-void sort(vector<int> &vec, vector<int> &aux, int lower, int high)
+void sort(vector<int> &vec, vector<int> &aux, int low, int high)
 {
-    if (lower >= high)
+    if (low >= high)
         return;
 
-    int mid = lower + (high - lower) / 2;
-    sort(vec, aux, lower, mid);
+    int mid = low + (high - low) / 2;
+    sort(vec, aux, low, mid);
     sort(vec, aux, mid + 1, high);
-    merge(vec, aux, lower, mid, high);
+    merge(vec, aux, low, mid, high);
 }
 
 void mergeSort(vector<int> &vec)
