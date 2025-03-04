@@ -18,6 +18,7 @@ bool isLess(vector<int> &heap, int first_idx, int second_idx)
 {
     return heap[first_idx] < heap[second_idx];
 }
+
 void swim(vector<int> &heap, int length)
 {
     int last_idx = length - 1;
@@ -130,6 +131,13 @@ int main()
     printf("\n");
 
     printTree(heap, 1);
+
+    printf("\n");
+
+    for (int i = 0; i < heap.size(); i++)
+    {
+        printf("%i, ", heap[i]);
+    }
 
     return 0;
 }
