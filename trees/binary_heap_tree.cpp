@@ -18,9 +18,9 @@ bool isLess(vector<int> &heap, int first_idx, int second_idx)
 {
     return heap[first_idx] < heap[second_idx];
 }
-void swim(vector<int> &heap)
+void swim(vector<int> &heap, int length)
 {
-    int last_idx = heap.size() - 1;
+    int last_idx = length - 1;
 
     while (last_idx > 1 && isLess(heap, last_idx / 2, last_idx))
     {
@@ -29,15 +29,15 @@ void swim(vector<int> &heap)
     }
 }
 
-void sink(vector<int> &heap, int root_idx)
+void sink(vector<int> &heap, int root_idx, int length)
 {
-    while (root_idx * 2 < heap.size())
+    while (root_idx * 2 < length)
     {
         int right_leaf_idx = root_idx * 2;
         int left_leaf_idx = right_leaf_idx + 1;
         int leaf_idx = right_leaf_idx;
 
-        if (right_leaf_idx < heap.size() && isLess(heap, right_leaf_idx, left_leaf_idx))
+        if (right_leaf_idx < length && isLess(heap, right_leaf_idx, left_leaf_idx))
         {
             leaf_idx = left_leaf_idx;
         }
@@ -59,7 +59,7 @@ void insert(vector<int> &heap, int value)
         heap.push_back(-1);
     }
     heap.push_back(value);
-    swim(heap);
+    swim(heap, heap.size());
 }
 
 int removeMax(vector<int> &heap)
@@ -72,9 +72,25 @@ int removeMax(vector<int> &heap)
     int value = heap[1];
     exchange(heap, 1, heap.size() - 1);
     heap.pop_back();
-    sink(heap, 1);
+    sink(heap, 1, heap.size());
 
     return value;
+}
+
+void sort(vector<int> &heap)
+{
+    int length = heap.size();
+
+    for (int i = length / 2; i >= 1; i--)
+    {
+        sink(heap, i, heap.size());
+    }
+
+    while (length >= 1)
+    {
+        exchange(heap, 1, length - 1); // TODO: fix 0 idx;
+        sink(heap, 1, --length);
+    }
 }
 
 void printTree(vector<int> &heap, int idx)
@@ -108,5 +124,12 @@ int main()
     printf("\n");
 
     printTree(heap, 1);
+
+    sort(heap);
+
+    printf("\n");
+
+    printTree(heap, 1);
+
     return 0;
 }
